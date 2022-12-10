@@ -4,10 +4,11 @@
     //Maybe create an array ["rock", "paper", "scissors"], then 
     //use the Math.random() function to create to have computer randomly choose one
 
-const choices = ["Rock", "Paper", "Scissors"]
+const choices = ["rock", "paper", "scissors"]
 
-function getComputerChoice(choices) {
-    return choices[Math.floor(Math.random()*choices.length)];
+function getComputerChoice() {
+    const choice = choices[Math.floor(Math.random()*choices.length)]
+    return choice;
      }
 
    //Another way to write this would be: 
@@ -15,8 +16,6 @@ function getComputerChoice(choices) {
         //console.log(getComputerChoice);
 
      
-
-        
 
 //Create a function "playRound" that plays a single round of rps. Should have 
 //two parameters: playerSelection and computerSelection. Create if else statements
@@ -30,31 +29,73 @@ function getComputerChoice(choices) {
 
 
 function playRound(playerSelection, computerSelection) {
-    if (playerSelection.toLowerCase() === "rock" && computerSelection === "Rock") {
+    if (playerSelection.toLowerCase() === computerSelection) {
         return "It's a tie! No one wins this round.";
-    } else if (playerSelection.toLowerCase() === "rock" && computerSelection === "Paper") {
+    } else if ((playerSelection.toLowerCase() === "rock" && computerSelection === "paper") 
+    || (playerSelection.toLowerCase() === "paper" && computerSelection === "scissors") 
+    || (playerSelection.toLowerCase() === "scissors" && computerSelection === "rock")) {
         return "You lost! This round belongs to the computer.";
-    } else if (playerSelection.toLowerCase() === "rock" && computerSelection === "Scissors") {
+    } else if ((playerSelection.toLowerCase() === "rock" && computerSelection === "scissors") 
+    || (playerSelection.toLowerCase() === "paper" && computerSelection === "rock") 
+    || (playerSelection.toLowerCase() === "scissors" && computerSelection === "paper")) {
         return "You won! This round is yours.";
-    } else if (playerSelection.toLowerCase() === "paper" && computerSelection === "Rock") {
-        return "You won! This round is yours.";
-    } else if (playerSelection.toLowerCase() === "paper" && computerSelection === "Paper") {
-        return "It's a tie! No one wins this round.";
-    } else if (playerSelection.toLowerCase() === "paper" && computerSelection === "Scissors") {
-        return "You lost! This round belongs to the computer.";
-    } else if (playerSelection.toLowerCase() === "scissors" && computerSelection === "Rock") {
-        return "You lost! This round belongs to the computer.";
-    } else if (playerSelection.toLowerCase() === "scissors" && computerSelection === "Paper") {
-        return "You won! This round belongs to the computer."; 
-    } else if (playerSelection.toLowerCase() === "scissors" && computerSelection === "Scissors") {
-        return "It's a tie! No one wins this round.";
+    } 
+}
+
+
+
+//Write a function called game(). This should enable user to play 5 rounds of RPS and reports 
+//the winner or loser at the end. playround() will go inside this function. 
+//Use console.log() to display the results of each round and the overall winner
+
+function getPlayerChoice(){
+    let validInput = false; 
+    while(validInput == false) {
+        const choice = prompt("Rock, Paper, or Scissors?")
+        if(choice == null) {
+            continue;
+        }
+        const choiceInLower = choice.toLowerCase();
+        if(choices.includes(choiceInLower)){
+            validInput = true;
+            return choiceInLower;
+        }
     }
 }
 
-const playerSelection = "pApER"
-const computerSelection = getComputerChoice(choices);
+function game() {
+        let playerScore = 0;
+        let computerScore = 0;
+    for (let i = 0; i <5; i++) {
+        const playerSelection = getPlayerChoice();
+        const computerSelection = getComputerChoice();
+        console.log("player:", playerSelection, "| computer:", computerSelection)
+        console.log(playRound(playerSelection, computerSelection));
+        console.log("___________________________________________________________")
+        if(playRound(playerSelection, computerSelection) == "You won! This round is yours.") {
+            playerScore++;
+        } else if (playRound(playerSelection, computerSelection) == "You lost! This round belongs to the computer.") {
+            computerScore++;
+        } 
+    }
+    console.log("Game Over")
+    if(playerScore > computerScore){
+        console.log("Player was the winner");
+    } else if (playerScore < computerScore){
+        console.log("Computer was the winner");
+    } else {
+        console.log("We have a tie!")
+    }
 
-console.log (computerSelection)
-console.log(playRound(playerSelection, computerSelection))
+    console.log(playerScore, computerScore)
+}
+
+game()
+
+
+
+
+
+
 
 
