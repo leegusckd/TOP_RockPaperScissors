@@ -1,101 +1,111 @@
-//Create a function "getComputerChoice" that will randomly select 
-//rock paper scissors
-
-    //Maybe create an array ["rock", "paper", "scissors"], then 
-    //use the Math.random() function to create to have computer randomly choose one
-
 const choices = ["rock", "paper", "scissors"]
+const rockButton = document.querySelector('#rock')
+const paperButton = document.querySelector('#paper')
+const scissorsButton = document.querySelector('#scissors')
+const playerScoreElement = document.getElementById('playerScore');
+const computerScoreElement = document.getElementById('computerScore');
+const ending = document.querySelector('#ending')
+
+
+let playerSelection
+let computerSelection = getComputerChoice()
+let playerScore = 0
+let computerScore = 0
+
 
 function getComputerChoice() {
     const choice = choices[Math.floor(Math.random()*choices.length)]
     return choice;
-     }
-
-   //Another way to write this would be: 
-        //const getComputerChoice = choices[Math.floor(Math.random()*choices.length)];
-        //console.log(getComputerChoice);
-
-     
-
-//Create a function "playRound" that plays a single round of rps. Should have 
-//two parameters: playerSelection and computerSelection. Create if else statements
-//for the game, returning a string that declares the winner of the round. 
-
-     //playerSelection: either rock, paper, or scissor, depending on what the 
-        //player chooses. Make it case-insensistive
-
-     //computerSelection: const computerSelection = getComputerChoice();
+}
 
 
 
+rockButton.addEventListener('click', () => {
+    const playerSelection = "rock";
+    const computerSelection = getComputerChoice();
+    playRound(playerSelection, computerSelection)
+  })
+paperButton.addEventListener('click', () => {
+    const playerSelection = "paper";
+    const computerSelection = getComputerChoice();
+    playRound(playerSelection, computerSelection)
+  })
+scissorsButton.addEventListener('click', () => {
+    const playerSelection = "scissors";
+    const computerSelection = getComputerChoice();
+    playRound(playerSelection, computerSelection)
+  })
+
+
+  
 function playRound(playerSelection, computerSelection) {
-    if (playerSelection.toLowerCase() === computerSelection) {
-        return "It's a tie! No one wins this round.";
-    } else if ((playerSelection.toLowerCase() === "rock" && computerSelection === "paper") 
-    || (playerSelection.toLowerCase() === "paper" && computerSelection === "scissors") 
-    || (playerSelection.toLowerCase() === "scissors" && computerSelection === "rock")) {
-        return "You lost! This round belongs to the computer.";
-    } else if ((playerSelection.toLowerCase() === "rock" && computerSelection === "scissors") 
-    || (playerSelection.toLowerCase() === "paper" && computerSelection === "rock") 
-    || (playerSelection.toLowerCase() === "scissors" && computerSelection === "paper")) {
-        return "You won! This round is yours.";
+    if (playerSelection === computerSelection) {
+        result = ("It's a tie! No one wins this round.")
+    } else if ((playerSelection === "rock" && computerSelection === "paper") 
+    || (playerSelection === "paper" && computerSelection === "scissors") 
+    || (playerSelection === "scissors" && computerSelection === "rock")) {
+        computerScore++;
+        result = ("You lost! This round belongs to the computer.")
+    } else if ((playerSelection === "rock" && computerSelection === "scissors") 
+    || (playerSelection === "paper" && computerSelection === "rock") 
+    || (playerSelection === "scissors" && computerSelection === "paper")) {
+        playerScore++;
+        result = ("You won! This round is yours.")
     } 
-}
 
+    
 
-
-//Write a function called game(). This should enable user to play 5 rounds of RPS and reports 
-//the winner or loser at the end. playround() will go inside this function. 
-//Use console.log() to display the results of each round and the overall winner
-
-function getPlayerChoice(){
-    let validInput = false; 
-    while(validInput == false) {
-        const choice = prompt("Rock, Paper, or Scissors?")
-        if(choice == null) {
-            continue;
-        }
-        const choiceInLower = choice.toLowerCase();
-        if(choices.includes(choiceInLower)){
-            validInput = true;
-            return choiceInLower;
-        }
-    }
-}
-
-function game() {
-        let playerScore = 0;
-        let computerScore = 0;
-    for (let i = 0; i <5; i++) {
-        const playerSelection = getPlayerChoice();
-        const computerSelection = getComputerChoice();
-        console.log("player:", playerSelection, "| computer:", computerSelection)
-        console.log(playRound(playerSelection, computerSelection));
-        console.log("___________________________________________________________")
-        if(playRound(playerSelection, computerSelection) == "You won! This round is yours.") {
-            playerScore++;
-        } else if (playRound(playerSelection, computerSelection) == "You lost! This round belongs to the computer.") {
-            computerScore++;
-        } 
-    }
-    console.log("Game Over")
-    if(playerScore > computerScore){
-        console.log("Player was the winner");
-    } else if (playerScore < computerScore){
-        console.log("Computer was the winner");
-    } else {
-        console.log("We have a tie!")
+    if (playerScore ===5 || computerScore === 5) {
+      gameOver();
     }
 
-    console.log(playerScore, computerScore)
+
+    updateScoreboard();
+    document.getElementById('result').textContent = result; //.textcontent and .innerHTML accomplishes the same thing here
+    document.getElementById('playerChose').textContent = "Player's Selection: " + playerSelection;
+    document.getElementById('computerChose').textContent = "Computer's Selection: " + computerSelection;
+  }
+
+  
+function updateScoreboard() {
+    playerScoreElement.textContent = playerScore;
+    computerScoreElement.textContent = computerScore;
 }
 
-game()
+function gameOver() {
+  let message;
+  if (playerScore > computerScore) {
+    message = "You won the game!";
+  } else if (playerScore < computerScore) {
+    message = "You lost the game!";
+  }
 
+  ending.textContent = message;
 
+  rockButton.disabled = true; 
+  paperButton.disabled = true; 
+  scissorsButton.disabled = true; 
 
+  const resetButton = document.createElement('button');
+  resetButton.textContent = 'Play Again?';
+  resetButton.addEventListener('click', resetGame);
 
+  ending.appendChild(resetButton);
+}
 
+function resetGame() {
+  playerScore = 0;
+  computerScore = 0;
+  playerScoreElement.textContent = '0';
+  computerScoreElement.textContent = '0';
+  ending.textContent = '';
+  document.getElementById('result').textContent = '';
+  document.getElementById('playerChose').textContent = '';
+  document.getElementById('computerChose').textContent = '';
 
+  rockButton.disabled = false;
+  paperButton.disabled = false;
+  scissorsButton.disabled = false;
+}
 
 
