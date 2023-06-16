@@ -1,0 +1,45 @@
+body {
+    background: white;
+}
+
+.choices {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height:60vh;
+    margin-bottom: -25vh;
+   
+}
+
+.scoreboard {
+    display: grid; 
+    justify-content: center;
+    grid-template-columns: repeat(1, 1fr);
+    justify-items: center;
+    align-items: center;
+}
+
+#result {
+    display: flex;
+    justify-content: center;
+    margin-top: 2vh;
+    
+}
+
+#ending {
+    display: grid;
+    justify-content: center;
+    margin-top: 3vh;
+}
+
+#chose {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  #playerChose,
+  #computerChose {
+    margin: 0 10px;
+  }
